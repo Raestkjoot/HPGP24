@@ -38,7 +38,6 @@ public partial struct SpawnUnits : IJobEntity
         int n = spawner.armySizeA;
         float y = 0f;
         int armyWidth = (int)math.sqrt(n);
-        Debug.Log(armyWidth);
         var aTag = new ArmyATag();
 
         for (int i = 0; i < armyWidth * armyWidth; i++)
