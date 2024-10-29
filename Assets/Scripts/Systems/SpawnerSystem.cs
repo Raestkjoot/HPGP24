@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using Unity.Burst;
 using Unity.Entities;
 using Unity.Mathematics;
@@ -36,6 +37,7 @@ public partial struct SpawnUnits : IJobEntity
         float y = 0f;
 
         int armyWidth = (int)math.log2(n);
+        var aTag = new ArmyATag();
 
         for (int i = 0; i < n; i++)
         {
@@ -43,7 +45,23 @@ public partial struct SpawnUnits : IJobEntity
             float x = i % armyWidth * 2f;
             float z = i / armyWidth;
 
-            ecb.AddComponent(e, LocalTransform.FromPosition(new float3(x, y, z)));
+            ecb.AddComponent(e, LocalTransform.FromPosition(spawner.armyAOffset + new float3(x, y, z)));
+            ecb.AddComponent(e, aTag);
+        }
+
+        n = spawner.armySizeB;
+
+        armyWidth = (int)math.log2(n);
+        var bTag = new ArmyBTag();
+
+        for (int i = 0; i < n; i++)
+        {
+            var e = ecb.Instantiate(spawner.armyUnitPrefab);
+            float x = i % armyWidth * 2f;
+            float z = i / armyWidth;
+
+            ecb.AddComponent(e, LocalTransform.FromPosition(spawner.armyBOffset + new float3(x, y, z)));
+            ecb.AddComponent(e, bTag);
         }
     }
 }
