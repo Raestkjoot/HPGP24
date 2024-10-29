@@ -16,8 +16,8 @@ public class Enemy : MonoBehaviour
             {
                 position = authoring.position,
                 speed = authoring.speed,
-                rotationSpeed = authoring.rotationSpeed
-            });
+                rotationSpeed = authoring.rotationSpeed,
+            }) ;
         }
     }
 }

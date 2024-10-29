@@ -163,8 +163,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdfe96acaa4c490469c585e6f8d8e52f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  armySizeA: 25
-  armySizeB: 10
+  armySizeA: 100
+  armySizeB: 100
+  armyAOffset:
+    x: 100
+    y: 0
+    z: 0
+  armyBOffset:
+    x: 0
+    y: 0
+    z: 0
   armyUnitPrefab: {fileID: 3914314553464854680, guid: 48d88d86b0f12784eb08dad7f04bba64, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

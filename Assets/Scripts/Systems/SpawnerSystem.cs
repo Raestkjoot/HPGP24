@@ -3,6 +3,8 @@ using Unity.Burst;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
+using UnityEditor.PackageManager;
+using UnityEngine;
 
 partial struct SpawnerSystem : ISystem
 {
@@ -35,15 +37,15 @@ public partial struct SpawnUnits : IJobEntity
     {
         int n = spawner.armySizeA;
         float y = 0f;
-
-        int armyWidth = (int)math.log2(n);
+        int armyWidth = (int)math.sqrt(n);
+        Debug.Log(armyWidth);
         var aTag = new ArmyATag();
 
-        for (int i = 0; i < n; i++)
+        for (int i = 0; i < armyWidth * armyWidth; i++)
         {
             var e = ecb.Instantiate(spawner.armyUnitPrefab);
-            float x = i % armyWidth * 2f;
-            float z = i / armyWidth;
+            float x = (i % armyWidth) * 2f;
+            float z = ((i / armyWidth) % armyWidth) * 2f;
 
             ecb.AddComponent(e, LocalTransform.FromPosition(spawner.armyAOffset + new float3(x, y, z)));
             ecb.AddComponent(e, aTag);
@@ -51,14 +53,14 @@ public partial struct SpawnUnits : IJobEntity
 
         n = spawner.armySizeB;
 
-        armyWidth = (int)math.log2(n);
+        armyWidth = (int)math.sqrt(n);
         var bTag = new ArmyBTag();
 
-        for (int i = 0; i < n; i++)
+        for (int i = 0; i < armyWidth * armyWidth; i++)
         {
             var e = ecb.Instantiate(spawner.armyUnitPrefab);
-            float x = i % armyWidth * 2f;
-            float z = i / armyWidth;
+            float x = (i % armyWidth) * 2f;
+            float z = ((i / armyWidth) % armyWidth) * 2f;
 
             ecb.AddComponent(e, LocalTransform.FromPosition(spawner.armyBOffset + new float3(x, y, z)));
             ecb.AddComponent(e, bTag);
