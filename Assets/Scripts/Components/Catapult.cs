@@ -9,8 +9,11 @@ public class Catapult : MonoBehaviour
     public GameObject launchedProjectile;
 
     public static readonly Vector2 retractionSpeedRange = new(0.5f, 1.0f);
-    public static readonly Vector2 loadingTimeRange = new(0.6f, 2.3f);
-    public static readonly Vector2 launchSpeedRange = new(18.0f, 25.0f);
+    public static readonly Vector2 loadingTimeRange = new(0.6f, 1.4f);
+    public static readonly float launchSpeed = 12.0f;
+    public static readonly Vector2 projectileVelocityRange = new(40.0f, 50.0f);
+    public static readonly Vector2 projectileSideVelocityRange = new(-0.4f, 0.4f);
+    public static readonly Vector3 ProjectileSpawnOffset = new(0.0f, -8.8f, 0.0f);
 
     class CatapultBaker : Baker<Catapult>
     {

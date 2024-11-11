@@ -18,11 +18,9 @@ partial struct CatapultLaunchingSystem : ISystem
             switch (catapultData.ValueRO.state)
             {
                 case CatapultState.Retracting:
-                    // Catapult arm retracts, rotating towards the retracted position.
-
-                    if ((math.Euler(transform.ValueRO.Rotation).z * math.TODEGREES) < catapultData.ValueRO.retractedRotation)
+                    if ((math.Euler(transform.ValueRO.Rotation).x * math.TODEGREES) < catapultData.ValueRO.retractedRotation)
                     {
-                        var rot = quaternion.RotateZ(catapultData.ValueRO.retractionSpeed * dt);
+                        var rot = quaternion.RotateX(-catapultData.ValueRO.retractionSpeed * dt);
                         transform.ValueRW.Rotation = math.mul(transform.ValueRO.Rotation, rot);
                     }
                     else
@@ -35,21 +33,17 @@ partial struct CatapultLaunchingSystem : ISystem
                     break;
 
                 case CatapultState.Loading:
-                    // Catapult loads projectile, projectile is instantiated and set as child of the arm.
-
                     if (catapultData.ValueRO.loadingTimer > 0.0f)
                     {
                         catapultData.ValueRW.loadingTimer -= dt;
 
-                        // projectile spawn time hardcoded to 0.5, should probably change that
-                        if (catapultData.ValueRO.loadingTimer < 0.5f && catapultData.ValueRO.isProjectileLoaded == false)
+                        // TODO: projectile spawn time hardcoded, should probably change that
+                        if (catapultData.ValueRO.loadingTimer < 0.45f && catapultData.ValueRO.isProjectileLoaded == false)
                         {
-                            Vector3 spawnPos = new(-0.5f, 0.0f, 0.0f);
-
                             var ecb = SystemAPI.GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>()
                                 .CreateCommandBuffer(state.WorldUnmanaged);
                             var e = ecb.Instantiate(catapultData.ValueRO.loadedProjectile);
-                            ecb.AddComponent(e, LocalTransform.FromPosition(spawnPos));
+                            ecb.AddComponent(e, LocalTransform.FromPosition(Catapult.ProjectileSpawnOffset));
                             ecb.AddComponent(e, new Parent { Value = entity });
                             catapultData.ValueRW.isProjectileLoaded = true;
                         }
@@ -57,19 +51,14 @@ partial struct CatapultLaunchingSystem : ISystem
                     else
                     {
                         catapultData.ValueRW.state = CatapultState.Launching;
-                        catapultData.ValueRW.launchSpeed = UnityEngine.Random.Range(
-                            Catapult.launchSpeedRange.x,
-                            Catapult.launchSpeedRange.y);
+                        catapultData.ValueRW.launchSpeed = Catapult.launchSpeed;
                     }
                     break;
 
                 case CatapultState.Launching:
-                    // Catapult launches projectile, the arm rotates towards launched position. Once reached, the
-                    // projectile is un-childed, a rigidbody component is added, and a velocity applied.
-
-                    if ((math.Euler(transform.ValueRO.Rotation).z * math.TODEGREES) > catapultData.ValueRO.launchedRotation)
+                    if ((math.Euler(transform.ValueRO.Rotation).x * math.TODEGREES) > catapultData.ValueRO.launchedRotation)
                     {
-                        var rot = quaternion.RotateZ(-catapultData.ValueRO.launchSpeed * dt);
+                        var rot = quaternion.RotateX(catapultData.ValueRO.launchSpeed * dt);
                         transform.ValueRW.Rotation = math.mul(transform.ValueRO.Rotation, rot);
                     }
                     else
@@ -86,9 +75,15 @@ partial struct CatapultLaunchingSystem : ISystem
                         var loadedProjectile = SystemAPI.GetBuffer<Child>(entity).ElementAt(0).Value;
                         var projectilePosition = SystemAPI.GetComponent<LocalToWorld>(loadedProjectile).Position;
                         var launchedProjectile = ecb.Instantiate(catapultData.ValueRO.launchedProjectile);
-                        ecb.AddComponent(launchedProjectile, LocalTransform.FromPosition(projectilePosition));
-                        // TODO: Set linear velocity in baker
-                        ecb.SetComponent<PhysicsVelocity>(launchedProjectile, new PhysicsVelocity { Linear = new float3(30.0f, 30.0f, 0.0f) });
+                        ecb.AddComponent<LocalTransform>(launchedProjectile, LocalTransform.FromPosition(projectilePosition));
+                        var vel = new PhysicsVelocity
+                        {
+                            Linear = new float3(
+                            UnityEngine.Random.Range(Catapult.projectileSideVelocityRange.x, Catapult.projectileSideVelocityRange.y),
+                            UnityEngine.Random.Range(Catapult.projectileVelocityRange.x, Catapult.projectileVelocityRange.y),
+                            UnityEngine.Random.Range(Catapult.projectileVelocityRange.x, Catapult.projectileVelocityRange.y))
+                        };
+                        ecb.SetComponent<PhysicsVelocity>(launchedProjectile, vel);
                         ecb.DestroyEntity(loadedProjectile);
 
                     }
