@@ -17,11 +17,13 @@ partial struct CatapultLaunchingSystem : ISystem
     {
         float dt = SystemAPI.Time.DeltaTime;
 
-        foreach (var (transform, catapultData) in SystemAPI.Query<RefRW<LocalTransform>, RefRW<CatapultRotationPointComponent>>())
+        foreach (var (transform, catapultData, entity) in SystemAPI.Query<RefRW<LocalTransform>, RefRW<CatapultComponent>>().WithEntityAccess())
         {
             switch (catapultData.ValueRO.state)
             {
                 case CatapultState.Retracting:
+                    // Catapult arm retracts, rotating towards the retracted position.
+
                     if ((math.Euler(transform.ValueRO.Rotation).z * math.TODEGREES) < catapultData.ValueRO.retractedRotation)
                     {
                         var rot = quaternion.RotateZ(catapultData.ValueRO.retractionSpeed * dt);
@@ -31,28 +33,45 @@ partial struct CatapultLaunchingSystem : ISystem
                     {
                         catapultData.ValueRW.state = CatapultState.Loading;
                         catapultData.ValueRW.loadingTimer = UnityEngine.Random.Range(
-                            CatapultRotationPoint.loadingTimeRange.x,
-                            CatapultRotationPoint.loadingTimeRange.y);
+                            Catapult.loadingTimeRange.x,
+                            Catapult.loadingTimeRange.y);
                     }
                     break;
 
                 case CatapultState.Loading:
+                    // Catapult loads projectile, projectile is instantiated and set as child of the arm.
+
                     if (catapultData.ValueRO.loadingTimer > 0.0f)
                     {
                         catapultData.ValueRW.loadingTimer -= dt;
-                        // If loadingTimer at halfway point, spawn projectile
+                        // TODO: If loadingTimer at halfway point, spawn projectile
                         // Make projectile follow the catapult arm
+
+                        if (catapultData.ValueRO.loadingTimer < 0.5f && catapultData.ValueRO.isProjectileLoaded == false)
+                        {
+                            Vector3 spawnPos = new(-0.5f, 0.0f, 0.0f);
+
+                            var ecb = SystemAPI.GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>()
+                                .CreateCommandBuffer(state.WorldUnmanaged);
+                            var e = ecb.Instantiate(catapultData.ValueRO.projectile);
+                            ecb.AddComponent(e, LocalTransform.FromPosition(spawnPos));
+                            ecb.AddComponent(e, new Parent { Value = entity });
+                            catapultData.ValueRW.isProjectileLoaded = true;
+                        }
                     }
                     else
                     {
                         catapultData.ValueRW.state = CatapultState.Launching;
                         catapultData.ValueRW.launchSpeed = UnityEngine.Random.Range(
-                            CatapultRotationPoint.launchSpeedRange.x,
-                            CatapultRotationPoint.launchSpeedRange.y);
+                            Catapult.launchSpeedRange.x,
+                            Catapult.launchSpeedRange.y);
                     }
                     break;
 
                 case CatapultState.Launching:
+                    // Catapult launches projectile, the arm rotates towards launched position. Once reached, the
+                    // projectile is un-childed, a rigidbody component is added, and a velocity applied.
+
                     if ((math.Euler(transform.ValueRO.Rotation).z * math.TODEGREES) > catapultData.ValueRO.launchedRotation)
                     {
                         var rot = quaternion.RotateZ(-catapultData.ValueRO.launchSpeed * dt);
@@ -62,8 +81,11 @@ partial struct CatapultLaunchingSystem : ISystem
                     {
                         catapultData.ValueRW.state = CatapultState.Retracting;
                         catapultData.ValueRW.launchSpeed = UnityEngine.Random.Range(
-                            CatapultRotationPoint.retractionSpeedRange.x,
-                            CatapultRotationPoint.retractionSpeedRange.y);
+                            Catapult.retractionSpeedRange.x,
+                            Catapult.retractionSpeedRange.y);
+
+                        catapultData.ValueRW.isProjectileLoaded = false;
+                        SystemAPI.GetBuffer<Child>(entity).Clear();
                     }
                     break;
             }

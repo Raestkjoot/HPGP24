@@ -241,9 +241,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   retractedRotation: 45
-  retractionSpeed: 1
   launchedRotation: -115
-  launchSpeed: 20
+  projectile: {fileID: 6596972635229655086, guid: a4be0b0fc36dda24dbda2f4c3e7b7fbc, type: 3}
 --- !u!1 &160773412
 GameObject:
   m_ObjectHideFlags: 0
@@ -441,9 +440,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   retractedRotation: 45
-  retractionSpeed: 1
   launchedRotation: -115
-  launchSpeed: 20
+  projectile: {fileID: 6596972635229655086, guid: a4be0b0fc36dda24dbda2f4c3e7b7fbc, type: 3}
 --- !u!65 &626779072
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -674,9 +672,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   retractedRotation: 45
-  retractionSpeed: 1
   launchedRotation: -115
-  launchSpeed: 20
+  projectile: {fileID: 6596972635229655086, guid: a4be0b0fc36dda24dbda2f4c3e7b7fbc, type: 3}
 --- !u!65 &1118816170
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -978,7 +975,7 @@ MonoBehaviour:
   m_Smoothing: 0
   m_Mass: 90
   m_LinearDamping: 0.01
-  m_AngularDamping: 2
+  m_AngularDamping: 10
   m_InitialLinearVelocity:
     x: 10
     y: 10
