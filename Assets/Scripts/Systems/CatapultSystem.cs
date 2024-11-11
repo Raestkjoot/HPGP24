@@ -1,17 +1,13 @@
 using Unity.Burst;
 using Unity.Entities;
 using Unity.Mathematics;
+using Unity.Physics;
+using Unity.Physics.Extensions;
 using Unity.Transforms;
 using UnityEngine;
 
 partial struct CatapultLaunchingSystem : ISystem
 {
-    [BurstCompile]
-    public void OnCreate(ref SystemState state)
-    {
-        
-    }
-
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
@@ -44,16 +40,15 @@ partial struct CatapultLaunchingSystem : ISystem
                     if (catapultData.ValueRO.loadingTimer > 0.0f)
                     {
                         catapultData.ValueRW.loadingTimer -= dt;
-                        // TODO: If loadingTimer at halfway point, spawn projectile
-                        // Make projectile follow the catapult arm
 
+                        // projectile spawn time hardcoded to 0.5, should probably change that
                         if (catapultData.ValueRO.loadingTimer < 0.5f && catapultData.ValueRO.isProjectileLoaded == false)
                         {
                             Vector3 spawnPos = new(-0.5f, 0.0f, 0.0f);
 
                             var ecb = SystemAPI.GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>()
                                 .CreateCommandBuffer(state.WorldUnmanaged);
-                            var e = ecb.Instantiate(catapultData.ValueRO.projectile);
+                            var e = ecb.Instantiate(catapultData.ValueRO.loadedProjectile);
                             ecb.AddComponent(e, LocalTransform.FromPosition(spawnPos));
                             ecb.AddComponent(e, new Parent { Value = entity });
                             catapultData.ValueRW.isProjectileLoaded = true;
@@ -84,17 +79,21 @@ partial struct CatapultLaunchingSystem : ISystem
                             Catapult.retractionSpeedRange.x,
                             Catapult.retractionSpeedRange.y);
 
+                        var ecb = SystemAPI.GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>()
+                            .CreateCommandBuffer(state.WorldUnmanaged);
+
                         catapultData.ValueRW.isProjectileLoaded = false;
-                        SystemAPI.GetBuffer<Child>(entity).Clear();
+                        var loadedProjectile = SystemAPI.GetBuffer<Child>(entity).ElementAt(0).Value;
+                        var projectilePosition = SystemAPI.GetComponent<LocalToWorld>(loadedProjectile).Position;
+                        var launchedProjectile = ecb.Instantiate(catapultData.ValueRO.launchedProjectile);
+                        ecb.AddComponent(launchedProjectile, LocalTransform.FromPosition(projectilePosition));
+                        // TODO: Set linear velocity in baker
+                        ecb.SetComponent<PhysicsVelocity>(launchedProjectile, new PhysicsVelocity { Linear = new float3(30.0f, 30.0f, 0.0f) });
+                        ecb.DestroyEntity(loadedProjectile);
+
                     }
                     break;
             }
         }
-    }
-
-    [BurstCompile]
-    public void OnDestroy(ref SystemState state)
-    {
-        
     }
 }

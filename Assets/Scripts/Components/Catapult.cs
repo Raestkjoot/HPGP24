@@ -5,7 +5,8 @@ public class Catapult : MonoBehaviour
 {
     public float retractedRotation;
     public float launchedRotation;
-    public GameObject projectile;
+    public GameObject loadedProjectile;
+    public GameObject launchedProjectile;
 
     public static readonly Vector2 retractionSpeedRange = new(0.5f, 1.0f);
     public static readonly Vector2 loadingTimeRange = new(0.6f, 2.3f);
@@ -22,7 +23,8 @@ public class Catapult : MonoBehaviour
                 launchedRotation = authoring.launchedRotation,
                 retractionSpeed = Random.Range(retractionSpeedRange.x, retractionSpeedRange.y),
                 state = CatapultState.Retracting,
-                projectile = GetEntity(authoring.projectile, TransformUsageFlags.Dynamic)
+                loadedProjectile = GetEntity(authoring.loadedProjectile, TransformUsageFlags.Dynamic),
+                launchedProjectile = GetEntity(authoring.launchedProjectile, TransformUsageFlags.Dynamic)
             });
         }
     }
@@ -40,7 +42,8 @@ public struct CatapultComponent : IComponentData
 
     // TODO: Can we make this into a static readonly somewhere?
     // I guess if we spawn the catapults like we do the armies...
-    public Entity projectile;
+    public Entity loadedProjectile;
+    public Entity launchedProjectile;
 }
 
 public enum CatapultState
