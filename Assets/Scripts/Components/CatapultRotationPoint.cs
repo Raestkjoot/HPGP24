@@ -3,10 +3,12 @@ using UnityEngine;
 
 public class CatapultRotationPoint : MonoBehaviour
 {
-    public float loadedRotation;
-    public float loadSpeed;
+    public float retractedRotation;
     public float launchedRotation;
-    public float launchSpeed;
+
+    public static readonly Vector2 retractionSpeedRange = new(0.8f, 1.2f);
+    public static readonly Vector2 loadingTimeRange = new(0.6f, 2.5f);
+    public static readonly Vector2 launchSpeedRange = new(18.0f, 25.0f);
 
     class CatapultRotationPointBaker : Baker<CatapultRotationPoint>
     {
@@ -15,10 +17,9 @@ public class CatapultRotationPoint : MonoBehaviour
             var entity = GetEntity(TransformUsageFlags.Dynamic);
             AddComponent(entity, new CatapultRotationPointComponent
             {
-                loadedRotation = authoring.loadedRotation,
-                loadSpeed = authoring.loadSpeed,
+                retractedRotation = authoring.retractedRotation,
                 launchedRotation = authoring.launchedRotation,
-                launchSpeed = authoring.launchSpeed,
+                retractionSpeed = Random.Range(retractionSpeedRange.x, retractionSpeedRange.y),
                 state = CatapultState.Retracting
             });
         }
@@ -27,10 +28,11 @@ public class CatapultRotationPoint : MonoBehaviour
 
 public struct CatapultRotationPointComponent : IComponentData
 {
-    public float loadedRotation;
-    public float loadSpeed;
+    public float retractedRotation;
+    public float retractionSpeed;
     public float launchedRotation;
     public float launchSpeed;
+    public float loadingTimer;
     public CatapultState state;
 }
 

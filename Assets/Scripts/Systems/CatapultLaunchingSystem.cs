@@ -22,21 +22,49 @@ partial struct CatapultLaunchingSystem : ISystem
             switch (catapultData.ValueRO.state)
             {
                 case CatapultState.Retracting:
-                    if ((math.Euler(transform.ValueRO.Rotation).z * math.TODEGREES) < catapultData.ValueRO.loadedRotation)
+                    if ((math.Euler(transform.ValueRO.Rotation).z * math.TODEGREES) < catapultData.ValueRO.retractedRotation)
                     {
-                        var rot = quaternion.RotateZ(catapultData.ValueRO.loadSpeed * dt);
+                        var rot = quaternion.RotateZ(catapultData.ValueRO.retractionSpeed * dt);
                         transform.ValueRW.Rotation = math.mul(transform.ValueRO.Rotation, rot);
                     }
                     else
                     {
                         catapultData.ValueRW.state = CatapultState.Loading;
+                        catapultData.ValueRW.loadingTimer = UnityEngine.Random.Range(
+                            CatapultRotationPoint.loadingTimeRange.x,
+                            CatapultRotationPoint.loadingTimeRange.y);
                     }
                     break;
 
                 case CatapultState.Loading:
+                    if (catapultData.ValueRO.loadingTimer > 0.0f)
+                    {
+                        catapultData.ValueRW.loadingTimer -= dt;
+                        // If loadingTimer at halfway point, spawn projectile
+                        // Make projectile follow the catapult arm
+                    }
+                    else
+                    {
+                        catapultData.ValueRW.state = CatapultState.Launching;
+                        catapultData.ValueRW.launchSpeed = UnityEngine.Random.Range(
+                            CatapultRotationPoint.launchSpeedRange.x,
+                            CatapultRotationPoint.launchSpeedRange.y);
+                    }
                     break;
 
                 case CatapultState.Launching:
+                    if ((math.Euler(transform.ValueRO.Rotation).z * math.TODEGREES) > catapultData.ValueRO.launchedRotation)
+                    {
+                        var rot = quaternion.RotateZ(-catapultData.ValueRO.launchSpeed * dt);
+                        transform.ValueRW.Rotation = math.mul(transform.ValueRO.Rotation, rot);
+                    }
+                    else
+                    {
+                        catapultData.ValueRW.state = CatapultState.Retracting;
+                        catapultData.ValueRW.launchSpeed = UnityEngine.Random.Range(
+                            CatapultRotationPoint.retractionSpeedRange.x,
+                            CatapultRotationPoint.retractionSpeedRange.y);
+                    }
                     break;
             }
         }
