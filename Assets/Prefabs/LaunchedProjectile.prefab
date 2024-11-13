@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 3650594577926527245}
   - component: {fileID: 4022809107553296105}
   - component: {fileID: 4497846801664002924}
-  - component: {fileID: 3780670518223397203}
   - component: {fileID: 5655424190806944118}
+  - component: {fileID: -863120933996745880}
+  - component: {fileID: -668478361807149174}
   m_Layer: 0
   m_Name: LaunchedProjectile
   m_TagString: Untagged
@@ -88,7 +89,72 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &3780670518223397203
+--- !u!114 &5655424190806944118
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6596972635229655086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccea9ea98e38942e0b0938c27ed1903e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_MotionType: 0
+  m_Smoothing: 0
+  m_Mass: 90
+  m_LinearDamping: 0.01
+  m_AngularDamping: 10
+  m_InitialLinearVelocity:
+    x: 0
+    y: 0
+    z: 0
+  m_InitialAngularVelocity:
+    x: 0
+    y: 0
+    z: 0
+  m_GravityFactor: 1
+  m_OverrideDefaultMassDistribution: 0
+  m_CenterOfMass:
+    x: 0
+    y: 0
+    z: 0
+  m_Orientation:
+    Value:
+      x: 0
+      y: 0
+      z: 0
+    RotationOrder: 4
+  m_InertiaTensor:
+    x: 0.4
+    y: 0.4
+    z: 0.4
+  m_WorldIndex: 0
+  m_CustomTags:
+    Tag00: 0
+    Tag01: 0
+    Tag02: 0
+    Tag03: 0
+    Tag04: 0
+    Tag05: 0
+    Tag06: 0
+    Tag07: 0
+--- !u!114 &-863120933996745880
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6596972635229655086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e08e34a12fd54c48aa2995b8d1e9fd4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxForce: 50
+  minForce: 1
+--- !u!114 &-668478361807149174
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -103,12 +169,12 @@ MonoBehaviour:
   m_ShapeType: 2
   m_PrimitiveCenter:
     x: 0
-    y: 0
-    z: 0
+    y: -0.0036768913
+    z: 0.108039916
   m_PrimitiveSize:
-    x: 1.6
-    y: 1.6
-    z: 1.6
+    x: 1.78885
+    y: 1.78885
+    z: 1.78885
   m_PrimitiveOrientation:
     Value:
       x: -0
@@ -116,18 +182,18 @@ MonoBehaviour:
       z: 0
     RotationOrder: 4
   m_Capsule:
-    Height: 1.6
-    Radius: 0.8
+    Height: 1.78885
+    Radius: 0.894425
     Axis: 2
   m_Cylinder:
-    Height: 1.6
-    Radius: 0.8
+    Height: 1.78885
+    Radius: 0.894425
     Axis: 2
   m_CylinderSideCount: 20
-  m_SphereRadius: 0.8
+  m_SphereRadius: 0.894425
   m_MinimumSkinnedVertexWeight: 0.1
   m_ConvexHullGenerationParameters:
-    m_SimplificationTolerance: 0.015
+    m_SimplificationTolerance: 0.026832748
     m_BevelRadius: 0.05
     m_MinimumAngle: 2.5000002
   m_CustomMesh: {fileID: 0}
@@ -137,11 +203,11 @@ MonoBehaviour:
     m_Template: {fileID: 0}
     m_CollisionResponse:
       m_Override: 0
-      m_Value: 0
+      m_Value: 1
     m_Friction:
       m_Override: 0
       m_Value:
-        Value: 0.96
+        Value: 0.5
         CombineMode: 0
     m_Restitution:
       m_Override: 0
@@ -231,54 +297,3 @@ MonoBehaviour:
         Tag07: 0
     m_SerializedVersion: 1
   m_SerializedVersion: 1
---- !u!114 &5655424190806944118
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6596972635229655086}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ccea9ea98e38942e0b0938c27ed1903e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_MotionType: 0
-  m_Smoothing: 0
-  m_Mass: 90
-  m_LinearDamping: 0.01
-  m_AngularDamping: 10
-  m_InitialLinearVelocity:
-    x: 0
-    y: 0
-    z: 0
-  m_InitialAngularVelocity:
-    x: 0
-    y: 0
-    z: 0
-  m_GravityFactor: 1
-  m_OverrideDefaultMassDistribution: 0
-  m_CenterOfMass:
-    x: 0
-    y: 0
-    z: 0
-  m_Orientation:
-    Value:
-      x: 0
-      y: 0
-      z: 0
-    RotationOrder: 4
-  m_InertiaTensor:
-    x: 0.4
-    y: 0.4
-    z: 0.4
-  m_WorldIndex: 0
-  m_CustomTags:
-    Tag00: 0
-    Tag01: 0
-    Tag02: 0
-    Tag03: 0
-    Tag04: 0
-    Tag05: 0
-    Tag06: 0
-    Tag07: 0

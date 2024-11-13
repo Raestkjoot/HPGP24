@@ -11,8 +11,13 @@ using UnityEngine.Rendering;
 
 partial struct ColissionSystem : ISystem
 {
+    public ComponentLookup<ArmyATag> allArmyA;
+    public ComponentLookup<ArmyBTag> allArmyB;
+
     public void OnCreate(ref SystemState state)
     {
+        allArmyA = state.GetComponentLookup<ArmyATag>();
+        allArmyB = state.GetComponentLookup<ArmyBTag>();
     }
 
     [BurstCompile]
@@ -23,10 +28,13 @@ partial struct ColissionSystem : ISystem
                 .CreateCommandBuffer(state.WorldUnmanaged);
         var random = Random.Range(0.0f, 1.0f);
 
+        allArmyA.Update(ref state);
+        allArmyB.Update(ref state);
+
         state.Dependency = new TriggerJob
         {
-            allArmyA = state.GetComponentLookup<ArmyATag>(),
-            allArmyB = state.GetComponentLookup<ArmyBTag>(),
+            allArmyA = allArmyA,
+            allArmyB = allArmyB,
             ecb = ECB,
             random = random
         }.Schedule(simulationSingleton, state.Dependency);
