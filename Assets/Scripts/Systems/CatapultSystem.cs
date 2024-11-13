@@ -76,6 +76,7 @@ partial struct CatapultLaunchingSystem : ISystem
                         var projectilePosition = SystemAPI.GetComponent<LocalToWorld>(loadedProjectile).Position;
                         var launchedProjectile = ecb.Instantiate(catapultData.ValueRO.launchedProjectile);
                         ecb.AddComponent<LocalTransform>(launchedProjectile, LocalTransform.FromPosition(projectilePosition));
+                        ecb.AddComponent<AirTimeTag>(launchedProjectile);
                         var vel = new PhysicsVelocity
                         {
                             Linear = new float3(

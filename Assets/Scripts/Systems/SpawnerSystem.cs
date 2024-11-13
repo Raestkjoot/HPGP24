@@ -5,6 +5,7 @@ using Unity.Mathematics;
 using Unity.Transforms;
 using UnityEditor.PackageManager;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 partial struct SpawnerSystem : ISystem
 {
@@ -48,6 +49,7 @@ public partial struct SpawnUnits : IJobEntity
 
             ecb.AddComponent(e, LocalTransform.FromPosition(spawner.armyAOffset + new float3(x, y, z)));
             ecb.AddComponent(e, aTag);
+            ecb.AddComponent(e, new SoldierTag { });
         }
 
         n = spawner.armySizeB;
@@ -63,6 +65,7 @@ public partial struct SpawnUnits : IJobEntity
 
             ecb.AddComponent(e, LocalTransform.FromPosition(spawner.armyBOffset + new float3(x, y, z)));
             ecb.AddComponent(e, bTag);
+            ecb.AddComponent(e, new SoldierTag { });
         }
     }
 }
