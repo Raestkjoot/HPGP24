@@ -44,17 +44,21 @@ public struct ProjectileCollisionJob : ICollisionEventsJob
     {
         Entity entityA = collisionEvent.EntityA;
         Entity entityB = collisionEvent.EntityB;
-        
+        Timer timer = new Timer {timer = 1.0f }; //How long projectile stays in scene
 
         if (floor.HasComponent(entityA) && projectile.HasComponent(entityB))
         {
             ecb.RemoveComponent<AirTimeTag>(entityB);
             ecb.AddComponent<ImpactTag>(entityB);
+            ecb.AddComponent<Timer>(entityB, timer);
+            ecb.AddComponent<VfxEmitterTag>(entityB);
         }
         else if (projectile.HasComponent(entityA) && floor.HasComponent(entityB))
         {
             ecb.RemoveComponent<AirTimeTag>(entityA);
             ecb.AddComponent<ImpactTag>(entityA);
+            ecb.AddComponent<Timer>(entityA, timer);
+            ecb.AddComponent<VfxEmitterTag>(entityA);
         }
     }
 }
