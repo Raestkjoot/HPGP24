@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-    public int armySizeA = 100;
+    public DataSingletonComponentBaker data;
     public int armySizeB = 100;
-    public float3 armyAOffset = new float3(100, 0, 0);
     public float3 armyBOffset = new float3(0, 0, 0);
     public GameObject armyUnitPrefab;
 
@@ -18,9 +17,9 @@ public class Spawner : MonoBehaviour
 
             AddComponent(entity, new SpawnerComponent
             {
-                armySizeA = authoring.armySizeA,
+                armySizeA = authoring.data.spawnAmount,
                 armySizeB = authoring.armySizeB,
-                armyAOffset = authoring.armyAOffset,
+                armyAOffset = authoring.data.spawnPosition,
                 armyBOffset = authoring.armyBOffset,
                 armyUnitPrefab = GetEntity(authoring.armyUnitPrefab, TransformUsageFlags.Dynamic)
             });

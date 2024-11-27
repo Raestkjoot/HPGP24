@@ -10,32 +10,58 @@ partial struct EnemyControllerSystem : ISystem
     public void OnCreate(ref SystemState state)
     {
         state.RequireForUpdate<SpawnerComponent>();
+        state.RequireForUpdate<DataSingletonComponent>();
     }
 
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
         float deltaTime = (float)SystemAPI.Time.DeltaTime;
-        /*foreach (var (transform, component) in SystemAPI.Query<RefRW<LocalTransform>, RefRO<EnemyComponent>>().WithAll<ArmyATag>())
+
+        var data = SystemAPI.GetSingleton<DataSingletonComponent>();
+
+        if(data.schedulingType == SchedulingType.Run)
         {
-            var x_movement = transform.ValueRO.Position.x - (component.ValueRO.speed * deltaTime);
-            transform.ValueRW.Position = new float3(x_movement, transform.ValueRO.Position.y, transform.ValueRO.Position.z);
+            foreach (var (transform, component) in SystemAPI.Query<RefRW<LocalTransform>, RefRO<EnemyComponent>>().WithAll<ArmyATag>())
+            {
+                var x_movement = transform.ValueRO.Position.x - (component.ValueRO.speed * deltaTime);
+                transform.ValueRW.Position = new float3(x_movement, transform.ValueRO.Position.y, transform.ValueRO.Position.z);
+            }
+            foreach (var (transform, component) in SystemAPI.Query<RefRW<LocalTransform>, RefRO<EnemyComponent>>().WithAll<ArmyBTag>())
+            {
+                var x_movement = transform.ValueRO.Position.x + (component.ValueRO.speed * deltaTime);
+                transform.ValueRW.Position = new float3(x_movement, transform.ValueRO.Position.y, transform.ValueRO.Position.z);
+            }
         }
-        foreach (var (transform, component) in SystemAPI.Query<RefRW<LocalTransform>, RefRO<EnemyComponent>>().WithAll<ArmyBTag>())
+        
+        if(data.schedulingType == SchedulingType.Schedule)
         {
-            var x_movement = transform.ValueRO.Position.x + (component.ValueRO.speed * deltaTime);
-            transform.ValueRW.Position = new float3(x_movement, transform.ValueRO.Position.y, transform.ValueRO.Position.z);
-        }*/
-        var moveArmyADependency = new MoveArmyAJob
-        {
-            deltaTime = deltaTime,
+            var moveArmyADependency = new MoveArmyAJob
+            {
+                deltaTime = deltaTime,
 
-        }.ScheduleParallel(state.Dependency);
-        state.Dependency = new MoveArmyBJob
-        {
-            deltaTime = deltaTime,
+            }.Schedule(state.Dependency);
+            state.Dependency = new MoveArmyBJob
+            {
+                deltaTime = deltaTime,
 
-        }.ScheduleParallel(moveArmyADependency);
+            }.Schedule(moveArmyADependency);
+        }
+
+
+        if(data.schedulingType == SchedulingType.ScheduleParallel)
+        {
+            var moveArmyADependency = new MoveArmyAJob
+            {
+                deltaTime = deltaTime,
+
+            }.ScheduleParallel(state.Dependency);
+            state.Dependency = new MoveArmyBJob
+            {
+                deltaTime = deltaTime,
+
+            }.ScheduleParallel(moveArmyADependency);
+        }
 
     }
 
