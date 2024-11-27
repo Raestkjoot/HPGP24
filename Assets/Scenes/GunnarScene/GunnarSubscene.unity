@@ -428,7 +428,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdfe96acaa4c490469c585e6f8d8e52f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 0}
+  data: {fileID: 905355201}
   armySizeB: 0
   armyBOffset:
     x: 0
