@@ -22,12 +22,12 @@ partial struct EnemyControllerSystem : ISystem
 
         if(data.schedulingType == SchedulingType.Run)
         {
-            foreach (var (transform, component) in SystemAPI.Query<RefRW<LocalTransform>, RefRO<EnemyComponent>>().WithAll<ArmyATag>())
+            foreach (var (transform, component) in SystemAPI.Query<RefRW<LocalTransform>, RefRO<EnemyComponent>>().WithAll<ArmyATag>().WithNone<StoppedTag>())
             {
                 var x_movement = transform.ValueRO.Position.x - (component.ValueRO.speed * deltaTime);
                 transform.ValueRW.Position = new float3(x_movement, transform.ValueRO.Position.y, transform.ValueRO.Position.z);
             }
-            foreach (var (transform, component) in SystemAPI.Query<RefRW<LocalTransform>, RefRO<EnemyComponent>>().WithAll<ArmyBTag>())
+            foreach (var (transform, component) in SystemAPI.Query<RefRW<LocalTransform>, RefRO<EnemyComponent>>().WithAll<ArmyBTag>().WithNone<StoppedTag>())
             {
                 var x_movement = transform.ValueRO.Position.x + (component.ValueRO.speed * deltaTime);
                 transform.ValueRW.Position = new float3(x_movement, transform.ValueRO.Position.y, transform.ValueRO.Position.z);
@@ -68,6 +68,7 @@ partial struct EnemyControllerSystem : ISystem
 }
 
 [WithAll(typeof(ArmyATag))]
+[WithNone(typeof(StoppedTag))]
 public partial struct MoveArmyAJob : IJobEntity
 {
     public float deltaTime;
@@ -79,6 +80,7 @@ public partial struct MoveArmyAJob : IJobEntity
 }
 
 [WithAll(typeof(ArmyBTag))]
+[WithNone(typeof(StoppedTag))]
 public partial struct MoveArmyBJob : IJobEntity
 {
     public float deltaTime;
