@@ -152,7 +152,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   retractedRotation: 85
   launchedRotation: -10
-  loadedProjectile: {fileID: 6596972635229655086, guid: a4be0b0fc36dda24dbda2f4c3e7b7fbc, type: 3}
+  loadedProjectile: {fileID: 6596972635229655086, guid: 57c7ba8e08d95f0499275cc585398e49, type: 3}
   launchedProjectile: {fileID: 6596972635229655086, guid: c5265e8b6cb7c50488e4852feca57a78, type: 3}
 --- !u!23 &125328752
 MeshRenderer:
@@ -483,7 +483,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   retractedRotation: 85
   launchedRotation: -10
-  loadedProjectile: {fileID: 6596972635229655086, guid: a4be0b0fc36dda24dbda2f4c3e7b7fbc, type: 3}
+  loadedProjectile: {fileID: 6596972635229655086, guid: 57c7ba8e08d95f0499275cc585398e49, type: 3}
   launchedProjectile: {fileID: 6596972635229655086, guid: c5265e8b6cb7c50488e4852feca57a78, type: 3}
 --- !u!23 &819364574
 MeshRenderer:
@@ -668,7 +668,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbbb22d776321ba43a5b92e655dc532b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  schedulingType: 0
+  schedulingType: 1
   spawnAmount: 1000
   spawnPosition:
     x: 0
@@ -722,7 +722,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   retractedRotation: 85
   launchedRotation: -10
-  loadedProjectile: {fileID: 6596972635229655086, guid: a4be0b0fc36dda24dbda2f4c3e7b7fbc, type: 3}
+  loadedProjectile: {fileID: 6596972635229655086, guid: 57c7ba8e08d95f0499275cc585398e49, type: 3}
   launchedProjectile: {fileID: 6596972635229655086, guid: c5265e8b6cb7c50488e4852feca57a78, type: 3}
 --- !u!23 &1126916224
 MeshRenderer:
@@ -806,7 +806,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   retractedRotation: 85
   launchedRotation: -10
-  loadedProjectile: {fileID: 6596972635229655086, guid: a4be0b0fc36dda24dbda2f4c3e7b7fbc, type: 3}
+  loadedProjectile: {fileID: 6596972635229655086, guid: 57c7ba8e08d95f0499275cc585398e49, type: 3}
   launchedProjectile: {fileID: 6596972635229655086, guid: c5265e8b6cb7c50488e4852feca57a78, type: 3}
 --- !u!1 &1220643527
 GameObject:
@@ -927,7 +927,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   retractedRotation: 85
   launchedRotation: -10
-  loadedProjectile: {fileID: 6596972635229655086, guid: a4be0b0fc36dda24dbda2f4c3e7b7fbc, type: 3}
+  loadedProjectile: {fileID: 6596972635229655086, guid: 57c7ba8e08d95f0499275cc585398e49, type: 3}
   launchedProjectile: {fileID: 6596972635229655086, guid: c5265e8b6cb7c50488e4852feca57a78, type: 3}
 --- !u!23 &1633576172
 MeshRenderer:
