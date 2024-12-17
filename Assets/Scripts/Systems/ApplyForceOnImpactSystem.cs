@@ -44,6 +44,7 @@ partial struct ApplyForceOnImpactSystem : ISystem
                             Linear = calImpact
                         };
                         ECB.SetComponent<PhysicsVelocity>(entity, vel);
+                        ECB.AddComponent<StoppedTag>(entity);
                     }
                 }
                 ECB.RemoveComponent<ImpactTag>(projectileEntity);
@@ -138,6 +139,7 @@ public partial struct ImpactJob : IJobEntity
                     Linear = calImpact
                 };
                 ecb.SetComponent<PhysicsVelocity>(soldierEntities[i], newVelocity);
+                ecb.AddComponent<StoppedTag>(soldierEntities[i]);
             }
         }
 
@@ -182,6 +184,7 @@ public partial struct ImpactJobParallel : IJobEntity
                     Linear = calImpact
                 };
                 ecb.SetComponent<PhysicsVelocity>(key, soldierEntities[i], newVelocity);
+                ecb.AddComponent<StoppedTag>(key, soldierEntities[i]);
             }
         }
 
