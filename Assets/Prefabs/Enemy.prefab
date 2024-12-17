@@ -127,7 +127,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   position: {x: 0, y: 0, z: 0}
   speed: 1
-  rotationSpeed: 0
+  rotationSpeed: 5
 --- !u!54 &-4516083156401877884
 Rigidbody:
   m_ObjectHideFlags: 0
