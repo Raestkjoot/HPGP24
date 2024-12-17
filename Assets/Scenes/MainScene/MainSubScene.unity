@@ -668,7 +668,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbbb22d776321ba43a5b92e655dc532b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  schedulingType: 1
+  schedulingType: 0
   spawnAmount: 1000
   spawnPosition:
     x: 0
