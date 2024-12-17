@@ -37,6 +37,7 @@ partial struct ApplyForceOnImpactSystem : ISystem
                         Linear = calImpact
                     };
                     ECB.SetComponent<PhysicsVelocity>(entity, vel);
+                    ECB.AddComponent<StoppedTag>(entity);
                 }
             }
             ECB.RemoveComponent<ImpactTag>(projectileEntity);
