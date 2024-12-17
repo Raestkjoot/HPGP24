@@ -101,7 +101,8 @@ partial struct CatapultLaunchingSystem : ISystem
         }
         if (data.schedulingType == SchedulingType.Schedule)
         {
-            var ECB = SystemAPI.GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>().CreateCommandBuffer(state.WorldUnmanaged);
+            var ECB = SystemAPI.GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>()
+                .CreateCommandBuffer(state.WorldUnmanaged);
 
             state.Dependency = new UpdateCatapult
             {
@@ -113,7 +114,15 @@ partial struct CatapultLaunchingSystem : ISystem
 
         if (data.schedulingType == SchedulingType.ScheduleParallel)
         {
-            Debug.LogWarning("CatapultSystem: ScheduleType not supported!");
+            var ECB = SystemAPI.GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>()
+                .CreateCommandBuffer(state.WorldUnmanaged).AsParallelWriter();
+
+            state.Dependency = new UpdateCatapultParallel
+            {
+                dt = dt,
+                ecb = ECB,
+                childLookup = SystemAPI.GetBufferLookup<Child>()
+            }.ScheduleParallel(state.Dependency);
         }
     } // End of Update
 
@@ -200,6 +209,96 @@ partial struct CatapultLaunchingSystem : ISystem
                         ecb.SetComponent<PhysicsGravityFactor>(loadedProjectile, grav);
                         ecb.SetComponent<LocalTransform>(loadedProjectile, trans);
                         ecb.RemoveComponent<Parent>(loadedProjectile);
+                    }
+                    break;
+            }
+        }
+    }
+
+    //[BurstCompile] - Not burst because we use random
+    public partial struct UpdateCatapultParallel : IJobEntity
+    {
+        public float dt;
+        public EntityCommandBuffer.ParallelWriter ecb;
+        [NativeDisableParallelForRestrictionAttribute]
+        public BufferLookup<Child> childLookup;
+
+
+        public void Execute([ChunkIndexInQuery] int key, ref LocalTransform transform, ref CatapultComponent catapultData, Entity entity)
+        {
+            switch (catapultData.state)
+            {
+                case CatapultState.Retracting:
+                    if ((math.Euler(transform.Rotation).x * math.TODEGREES) < catapultData.retractedRotation)
+                    {
+                        var rot = quaternion.RotateX(-catapultData.retractionSpeed * dt);
+                        transform.Rotation = math.mul(transform.Rotation, rot);
+                    }
+                    else
+                    {
+                        catapultData.state = CatapultState.Loading;
+                        var rand = new System.Random();
+                        catapultData.loadingTimer = Catapult.loadingTimeRange.x + (float)rand.NextDouble() * Catapult.loadingTimeRange.y;
+                    }
+                    break;
+
+                case CatapultState.Loading:
+                    if (catapultData.loadingTimer > 0.0f)
+                    {
+                        catapultData.loadingTimer -= dt;
+
+                        // TODO: projectile spawn time hardcoded, should probably change that
+                        if (catapultData.loadingTimer < 0.45f && catapultData.isProjectileLoaded == false)
+                        {
+                            var e = ecb.Instantiate(key, catapultData.loadedProjectile);
+                            ecb.AddComponent(key, e, LocalTransform.FromPosition(Catapult.ProjectileSpawnOffset));
+                            ecb.AddComponent(key, e, new Parent { Value = entity });
+                            catapultData.isProjectileLoaded = true;
+                        }
+                    }
+                    else
+                    {
+                        catapultData.state = CatapultState.Launching;
+                        catapultData.launchSpeed = Catapult.launchSpeed;
+                    }
+                    break;
+
+                case CatapultState.Launching:
+                    if ((math.Euler(transform.Rotation).x * math.TODEGREES) > catapultData.launchedRotation)
+                    {
+                        var rot = quaternion.RotateX(catapultData.launchSpeed * dt);
+                        transform.Rotation = math.mul(transform.Rotation, rot);
+                    }
+                    else
+                    {
+                        catapultData.state = CatapultState.Retracting;
+                        var rand = new System.Random();
+                        catapultData.launchSpeed = Catapult.retractionSpeedRange.x + (float)rand.NextDouble() * Catapult.retractionSpeedRange.y;
+                        catapultData.isProjectileLoaded = false;
+
+                        var loadedProjectile = childLookup[entity].ElementAt(0).Value;
+
+                        var linear = new float3(
+                            Catapult.projectileSideVelocityRange.x + (float)rand.NextDouble() * Catapult.projectileSideVelocityRange.y,
+                            40.0f,
+                            Catapult.projectileVelocityRange.x + (float)rand.NextDouble() * Catapult.projectileVelocityRange.y);
+
+                        var vel = new PhysicsVelocity { Linear = linear };
+
+                        var grav = new PhysicsGravityFactor { Value = 1 };
+
+                        var trans = new LocalTransform
+                        {
+                            Position = transform.Position + (float3)Catapult.ProjectileLaunchOffset,
+                            Rotation = quaternion.identity,
+                            Scale = 1.0f
+                        };
+
+                        ecb.AddComponent<AirTimeTag>(key, loadedProjectile);
+                        ecb.SetComponent<PhysicsVelocity>(key, loadedProjectile, vel);
+                        ecb.SetComponent<PhysicsGravityFactor>(key, loadedProjectile, grav);
+                        ecb.SetComponent<LocalTransform>(key, loadedProjectile, trans);
+                        ecb.RemoveComponent<Parent>(key, loadedProjectile);
                     }
                     break;
             }
