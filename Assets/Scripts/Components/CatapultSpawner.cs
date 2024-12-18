@@ -5,7 +5,10 @@ using UnityEngine;
 class CatapultSpawner : MonoBehaviour
 {
     public DataSingletonComponentBaker data;
-    public GameObject catapultPrefab;
+    public GameObject catapultBasePrefab;
+    public Quaternion catapultBaseRotation;
+    public GameObject catapultArmPrefab;
+    public Quaternion catapultArmRotation;
 
     class CatapultSpawnerBaker : Baker<CatapultSpawner>
     {
@@ -18,7 +21,10 @@ class CatapultSpawner : MonoBehaviour
                 spawnAmmount = authoring.data.spawnAmountCatapult,
                 catapultRowWidth = authoring.data.catapultRowWidth,
                 catapultOffset = authoring.data.spawnPositionCatapult,
-                catapultPrefab = GetEntity(authoring.catapultPrefab, TransformUsageFlags.Dynamic)
+                catapultBasePrefab = GetEntity(authoring.catapultBasePrefab, TransformUsageFlags.Dynamic),
+                catapultBaseRotation = authoring.catapultBaseRotation,
+                catapultArmPrefab = GetEntity(authoring.catapultArmPrefab, TransformUsageFlags.Dynamic),
+                catapultArmRotation = authoring.catapultArmRotation
 
             });
         }
@@ -32,5 +38,8 @@ public struct CatapultSpawnerComponent : IComponentData
     public int spawnAmmount;
     public int catapultRowWidth;
     public float3 catapultOffset;
-    public Entity catapultPrefab;
+    public Entity catapultBasePrefab;
+    public Quaternion catapultBaseRotation;
+    public Entity catapultArmPrefab;
+    public Quaternion catapultArmRotation;
 }

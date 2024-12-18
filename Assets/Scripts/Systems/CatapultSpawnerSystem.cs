@@ -31,11 +31,29 @@ partial struct CatapultSpawnerSystem : ISystem
 
             for (int i = 0; i < n; i++)
             {
-                var e = ECB.Instantiate(spawner.catapultPrefab);
+                var e = ECB.Instantiate(spawner.catapultBasePrefab);
+                var en = ECB.Instantiate(spawner.catapultArmPrefab);
                 float x = (i % width) * 7.5f;
                 float z = -(i / width) * 15f;
 
-                ECB.AddComponent(e, LocalTransform.FromPosition(spawner.catapultOffset + new float3(x, y, z)));
+
+                var baseTrans = new LocalTransform
+                {
+                    Position = spawner.catapultOffset + new float3(x, y, z),
+                    Rotation = spawner.catapultBaseRotation,
+                    Scale = 1.0f
+                };
+
+                var armTrans = new LocalTransform
+                {
+                    Position = spawner.catapultOffset + new float3(x, y, z),
+                    Rotation = spawner.catapultArmRotation,
+                    Scale = 1.0f
+                };
+
+
+                ECB.AddComponent(e, baseTrans);
+                ECB.AddComponent(en, armTrans);
             }
         }
 
@@ -75,11 +93,28 @@ public partial struct spawnCatapults : IJobEntity
 
         for (int i = 0; i < n; i++)
         {
-            var e = ecb.Instantiate(spawner.catapultPrefab);
+            var e = ecb.Instantiate(spawner.catapultBasePrefab);
+            var en = ecb.Instantiate(spawner.catapultArmPrefab);
             float x = (i % width) * 7.5f;
             float z = -(i / width) * 15f;
 
-            ecb.AddComponent(e, LocalTransform.FromPosition(spawner.catapultOffset + new float3(x, y, z)));
+            var baseTrans = new LocalTransform
+            {
+                Position = spawner.catapultOffset + new float3(x, y, z),
+                Rotation = spawner.catapultBaseRotation,
+                Scale = 1.0f
+            };
+
+            var armTrans = new LocalTransform
+            {
+                Position = spawner.catapultOffset + new float3(x, y, z),
+                Rotation = spawner.catapultArmRotation,
+                Scale = 1.0f
+            };
+
+
+            ecb.AddComponent(e, baseTrans);
+            ecb.AddComponent(en, armTrans);
         }
     }
 }
@@ -97,11 +132,28 @@ public partial struct spawnCatapultsParallel : IJobEntity
 
         for (int i = 0; i < n; i++)
         {
-            var e = ecb.Instantiate(key, spawner.catapultPrefab);
+            var e = ecb.Instantiate(key, spawner.catapultBasePrefab);
+            var en = ecb.Instantiate(key, spawner.catapultArmPrefab);
             float x = (i % width) * 7.5f;
             float z = -(i / width) * 15f;
 
-            ecb.AddComponent(key, e, LocalTransform.FromPosition(spawner.catapultOffset + new float3(x, y, z)));
+            var baseTrans = new LocalTransform
+            {
+                Position = spawner.catapultOffset + new float3(x, y, z),
+                Rotation = spawner.catapultBaseRotation,
+                Scale = 1.0f
+            };
+
+            var armTrans = new LocalTransform
+            {
+                Position = spawner.catapultOffset + new float3(x, y, z),
+                Rotation = spawner.catapultArmRotation,
+                Scale = 1.0f
+            };
+
+
+            ecb.AddComponent(key, e, baseTrans);
+            ecb.AddComponent(key, en, armTrans);
         }
     }
 }

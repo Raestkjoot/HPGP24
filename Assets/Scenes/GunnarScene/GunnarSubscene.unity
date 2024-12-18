@@ -164,7 +164,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data: {fileID: 905355201}
-  catapultPrefab: {fileID: 6847724336511628996, guid: 1250f1c181aa78045a5ed9a6cf0a99b1, type: 3}
+  catapultBasePrefab: {fileID: 6043006574952073835, guid: 9c80e9e09c1587346be4f50fece5c6e8, type: 3}
+  catapultBaseRotation: {x: -0.000000030903283, y: -0.7069847, z: 0.70722884, w: -0.000000030913956}
+  catapultArmPrefab: {fileID: 5274865003482948578, guid: 5c40727d786e2774b926d4724d04d9eb, type: 3}
+  catapultArmRotation: {x: 0.9961947, y: 0, z: 0, w: -0.08715577}
 --- !u!1 &160773412
 GameObject:
   m_ObjectHideFlags: 0
@@ -422,18 +425,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbbb22d776321ba43a5b92e655dc532b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  schedulingType: 0
+  schedulingType: 2
   spawnAmount: 1000
   spawnPosition:
     x: 0
     y: 0
     z: 60
-  spawnAmountCatapult: 0
+  spawnAmountCatapult: 34
   spawnPositionCatapult:
     x: 0
-    y: 0
+    y: -4
     z: 0
-  catapultRowWidth: 0
+  catapultRowWidth: 10
 --- !u!4 &905355202
 Transform:
   m_ObjectHideFlags: 0
