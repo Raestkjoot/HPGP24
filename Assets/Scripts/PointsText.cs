@@ -23,7 +23,9 @@ public class PointsText : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        if ( _goalEntity != Entity.Null ) { 
         int curPoints = _entityManager.GetComponentData<GoalTagComponent>(_goalEntity).points;
         _text.text = "Points: " + curPoints;
+        }
     }
 }
