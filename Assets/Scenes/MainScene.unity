@@ -562,6 +562,79 @@ TerrainCollider:
   serializedVersion: 2
   m_TerrainData: {fileID: 15600000, guid: 21c90c60840a37a4c83b0e6598dc2eec, type: 2}
   m_EnableTreeColliders: 1
+--- !u!1001 &943454410
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 566006263168509584, guid: dabb831a8a1be304699791e6e72aa16e, type: 3}
+      propertyPath: m_StaticShadowCaster
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1698410587334237695, guid: dabb831a8a1be304699791e6e72aa16e, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 10.119497
+      objectReference: {fileID: 0}
+    - target: {fileID: 1698410587334237695, guid: dabb831a8a1be304699791e6e72aa16e, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 10.119497
+      objectReference: {fileID: 0}
+    - target: {fileID: 1698410587334237695, guid: dabb831a8a1be304699791e6e72aa16e, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 10.119497
+      objectReference: {fileID: 0}
+    - target: {fileID: 1698410587334237695, guid: dabb831a8a1be304699791e6e72aa16e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -110.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1698410587334237695, guid: dabb831a8a1be304699791e6e72aa16e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1698410587334237695, guid: dabb831a8a1be304699791e6e72aa16e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 84.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1698410587334237695, guid: dabb831a8a1be304699791e6e72aa16e, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.6684233
+      objectReference: {fileID: 0}
+    - target: {fileID: 1698410587334237695, guid: dabb831a8a1be304699791e6e72aa16e, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1698410587334237695, guid: dabb831a8a1be304699791e6e72aa16e, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.74378115
+      objectReference: {fileID: 0}
+    - target: {fileID: 1698410587334237695, guid: dabb831a8a1be304699791e6e72aa16e, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1698410587334237695, guid: dabb831a8a1be304699791e6e72aa16e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1698410587334237695, guid: dabb831a8a1be304699791e6e72aa16e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 96.109
+      objectReference: {fileID: 0}
+    - target: {fileID: 1698410587334237695, guid: dabb831a8a1be304699791e6e72aa16e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2079017894953453381, guid: dabb831a8a1be304699791e6e72aa16e, type: 3}
+      propertyPath: m_Name
+      value: CS_Evil_Castle_Stage01 Variant
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: dabb831a8a1be304699791e6e72aa16e, type: 3}
 --- !u!1 &1018124430
 GameObject:
   m_ObjectHideFlags: 0
@@ -10992,3 +11065,4 @@ SceneRoots:
   - {fileID: 1356342997}
   - {fileID: 1592156973}
   - {fileID: 294163505}
+  - {fileID: 943454410}
