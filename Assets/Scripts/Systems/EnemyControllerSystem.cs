@@ -27,11 +27,6 @@ partial struct EnemyControllerSystem : ISystem
                 var x_movement = transform.ValueRO.Position.x - (component.ValueRO.speed * deltaTime);
                 transform.ValueRW.Position = new float3(x_movement, transform.ValueRO.Position.y, transform.ValueRO.Position.z);
             }
-            foreach (var (transform, component) in SystemAPI.Query<RefRW<LocalTransform>, RefRO<EnemyComponent>>().WithAll<ArmyBTag>().WithNone<StoppedTag>().WithNone<RotatingTag>())
-            {
-                var x_movement = transform.ValueRO.Position.x + (component.ValueRO.speed * deltaTime);
-                transform.ValueRW.Position = new float3(x_movement, transform.ValueRO.Position.y, transform.ValueRO.Position.z);
-            }
         }
         
         if(data.schedulingType == SchedulingType.Schedule)
@@ -41,11 +36,6 @@ partial struct EnemyControllerSystem : ISystem
                 deltaTime = deltaTime,
 
             }.Schedule(state.Dependency);
-            state.Dependency = new MoveArmyBJob
-            {
-                deltaTime = deltaTime,
-
-            }.Schedule(moveArmyADependency);
         }
 
 
@@ -56,11 +46,6 @@ partial struct EnemyControllerSystem : ISystem
                 deltaTime = deltaTime,
 
             }.ScheduleParallel(state.Dependency);
-            state.Dependency = new MoveArmyBJob
-            {
-                deltaTime = deltaTime,
-
-            }.ScheduleParallel(moveArmyADependency);
         }
 
     }
@@ -76,19 +61,6 @@ public partial struct MoveArmyAJob : IJobEntity
     public void Execute(ref LocalTransform trans, in EnemyComponent component)
     {
         var x_movement = trans.Position.x - (component.speed * deltaTime);
-        trans.Position = new float3(x_movement, trans.Position.y, trans.Position.z);
-    }
-}
-
-[WithAll(typeof(ArmyBTag))]
-[WithNone(typeof(StoppedTag))]
-[WithNone(typeof(RotatingTag))]
-public partial struct MoveArmyBJob : IJobEntity
-{
-    public float deltaTime;
-    public void Execute(ref LocalTransform trans, in EnemyComponent component)
-    {
-        var x_movement = trans.Position.x + (component.speed * deltaTime);
         trans.Position = new float3(x_movement, trans.Position.y, trans.Position.z);
     }
 }
