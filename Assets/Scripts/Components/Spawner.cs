@@ -5,9 +5,7 @@ using UnityEngine;
 public class Spawner : MonoBehaviour
 {
     public DataSingletonComponentBaker data;
-    public float3 armyAOffset;
-    public int armySizeB = 100;
-    public float3 armyBOffset = new float3(0, 0, 0);
+    public float3 armyOffset;
     public GameObject armyUnitPrefab;
 
     class SpawnerBaker : Baker<Spawner>
@@ -18,11 +16,10 @@ public class Spawner : MonoBehaviour
 
             AddComponent(entity, new SpawnerComponent
             {
-                armySizeA = authoring.data.spawnAmount,
-                armySizeB = authoring.armySizeB,
-                armyAOffset = authoring.armyAOffset,
-                armyBOffset = authoring.armyBOffset,
-                armyUnitPrefab = GetEntity(authoring.armyUnitPrefab, TransformUsageFlags.Dynamic)
+                armySize = authoring.data.spawnAmount,
+                armyOffset = authoring.armyOffset,
+                armyUnitPrefab = GetEntity(authoring.armyUnitPrefab, TransformUsageFlags.Dynamic),
+                armyColumnWidth = authoring.data.armyColumnWidth
             });
         }
     }
@@ -30,9 +27,8 @@ public class Spawner : MonoBehaviour
 
 public struct SpawnerComponent : IComponentData
 {
-    public int armySizeA;
-    public int armySizeB;
-    public float3 armyAOffset;
-    public float3 armyBOffset;
+    public int armySize;
+    public float3 armyOffset;
     public Entity armyUnitPrefab;
+    public int armyColumnWidth;
 }

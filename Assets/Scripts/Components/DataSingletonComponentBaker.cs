@@ -7,6 +7,7 @@ public class DataSingletonComponentBaker : MonoBehaviour
     public int spawnAmount;
     public int spawnAmountCatapult;
     public int catapultRowWidth;
+    public int armyColumnWidth;
 
 
     class Baker : Baker<DataSingletonComponentBaker>

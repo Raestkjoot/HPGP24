@@ -255,7 +255,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 12.3, y: -5.74, z: 48.9}
-  m_LocalScale: {x: 127.49, y: 1, z: 371.72}
+  m_LocalScale: {x: 10000, y: 1, z: 10000}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -379,15 +379,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data: {fileID: 905355201}
-  armyAOffset:
-    x: 10
+  armyOffset:
+    x: 100
     y: 0
-    z: 60
-  armySizeB: 0
-  armyBOffset:
-    x: 0
-    y: 0
-    z: 0
+    z: 20
   armyUnitPrefab: {fileID: 3914314553464854680, guid: 48d88d86b0f12784eb08dad7f04bba64, type: 3}
 --- !u!4 &747763803
 Transform:
@@ -434,9 +429,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   schedulingType: 2
-  spawnAmount: 1000
-  spawnAmountCatapult: 34
+  spawnAmount: 10000
+  spawnAmountCatapult: 50
   catapultRowWidth: 10
+  armyColumnWidth: 40
 --- !u!4 &905355202
 Transform:
   m_ObjectHideFlags: 0

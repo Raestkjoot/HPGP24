@@ -18,6 +18,9 @@ partial struct CatapultLaunchingSystem : ISystem
         float dt = SystemAPI.Time.DeltaTime;
         var data = SystemAPI.GetSingleton<DataSingletonComponent>();
 
+        var ecb = SystemAPI.GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>()
+                     .CreateCommandBuffer(state.WorldUnmanaged);
+
         if (data.schedulingType == SchedulingType.Run)
         {
             foreach (var (transform, catapultData, entity) in SystemAPI.Query<RefRW<LocalTransform>, RefRW<CatapultComponent>>().WithEntityAccess())
@@ -47,8 +50,6 @@ partial struct CatapultLaunchingSystem : ISystem
                             // TODO: projectile spawn time hardcoded, should probably change that
                             if (catapultData.ValueRO.loadingTimer < 0.45f && catapultData.ValueRO.isProjectileLoaded == false)
                             {
-                                var ecb = SystemAPI.GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>()
-                                    .CreateCommandBuffer(state.WorldUnmanaged);
                                 var e = ecb.Instantiate(catapultData.ValueRO.loadedProjectile);
                                 ecb.AddComponent(e, LocalTransform.FromPosition(Catapult.ProjectileSpawnOffset));
                                 ecb.AddComponent(e, new Parent { Value = entity });
@@ -70,29 +71,34 @@ partial struct CatapultLaunchingSystem : ISystem
                         }
                         else
                         {
+
                             catapultData.ValueRW.state = CatapultState.Retracting;
-                            catapultData.ValueRW.launchSpeed = UnityEngine.Random.Range(
-                                Catapult.retractionSpeedRange.x,
-                                Catapult.retractionSpeedRange.y);
-
-                            var ecb = SystemAPI.GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>()
-                                .CreateCommandBuffer(state.WorldUnmanaged);
-
+                            catapultData.ValueRW.launchSpeed = Catapult.retractionSpeedRange.x + UnityEngine.Random.Range(0f, 1f) * Catapult.retractionSpeedRange.y;
                             catapultData.ValueRW.isProjectileLoaded = false;
+
                             var loadedProjectile = SystemAPI.GetBuffer<Child>(entity).ElementAt(0).Value;
-                            var projectilePosition = SystemAPI.GetComponent<LocalToWorld>(loadedProjectile).Position;
-                            var launchedProjectile = ecb.Instantiate(catapultData.ValueRO.launchedProjectile);
-                            ecb.AddComponent<LocalTransform>(launchedProjectile, LocalTransform.FromPosition(projectilePosition));
-                            ecb.AddComponent<AirTimeTag>(launchedProjectile);
-                            var vel = new PhysicsVelocity
+
+                            var linear = new float3(
+                                Catapult.projectileSideVelocityRange.x + UnityEngine.Random.Range(0f, 1f) * Catapult.projectileSideVelocityRange.y,
+                                40.0f,
+                                Catapult.projectileVelocityRange.x + UnityEngine.Random.Range(0f, 1f) * Catapult.projectileVelocityRange.y);
+
+                            var vel = new PhysicsVelocity { Linear = linear };
+
+                            var grav = new PhysicsGravityFactor { Value = 1 };
+
+                            var trans = new LocalTransform
                             {
-                                Linear = new float3(
-                                UnityEngine.Random.Range(Catapult.projectileSideVelocityRange.x, Catapult.projectileSideVelocityRange.y),
-                                UnityEngine.Random.Range(Catapult.projectileVelocityRange.x, Catapult.projectileVelocityRange.y),
-                                UnityEngine.Random.Range(Catapult.projectileVelocityRange.x, Catapult.projectileVelocityRange.y))
+                                Position = transform.ValueRO.Position + (float3)Catapult.ProjectileLaunchOffset,
+                                Rotation = quaternion.identity,
+                                Scale = 1.0f
                             };
-                            ecb.SetComponent<PhysicsVelocity>(launchedProjectile, vel);
-                            ecb.DestroyEntity(loadedProjectile);
+
+                            ecb.AddComponent<AirTimeTag>(loadedProjectile);
+                            ecb.SetComponent<PhysicsVelocity>(loadedProjectile, vel);
+                            ecb.SetComponent<PhysicsGravityFactor>(loadedProjectile, grav);
+                            ecb.SetComponent<LocalTransform>(loadedProjectile, trans);
+                            ecb.RemoveComponent<Parent>(loadedProjectile);
 
                         }
                         break;
