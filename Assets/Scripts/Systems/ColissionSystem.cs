@@ -8,16 +8,20 @@ using Unity.Mathematics;
 using Unity.Physics;
 using Random = UnityEngine.Random;
 using UnityEngine.Rendering;
+using TMPro;
+using UnityEngine;
+using Unity.Transforms;
 
 partial struct ColissionSystem : ISystem
 {
-    public ComponentLookup<ArmyATag> allArmyA;
-    public ComponentLookup<ArmyBTag> allArmyB;
+    public ComponentLookup<ArmyATag> army;
+    public ComponentLookup<GoalTagComponent> goal;
 
     public void OnCreate(ref SystemState state)
     {
-        allArmyA = state.GetComponentLookup<ArmyATag>();
-        allArmyB = state.GetComponentLookup<ArmyBTag>();
+        // If we spawn more soldiers dynamically we can move this to update
+        army = state.GetComponentLookup<ArmyATag>();
+        goal = state.GetComponentLookup<GoalTagComponent>();
     }
 
     [BurstCompile]
@@ -28,53 +32,41 @@ partial struct ColissionSystem : ISystem
                 .CreateCommandBuffer(state.WorldUnmanaged);
         var random = Random.Range(0.0f, 1.0f);
 
-        allArmyA.Update(ref state);
-        allArmyB.Update(ref state);
+        army.Update(ref state);
+        goal.Update(ref state);
 
         state.Dependency = new TriggerJob
         {
-            allArmyA = allArmyA,
-            allArmyB = allArmyB,
-            ecb = ECB,
-            random = random
+            army = army,
+            goal = goal,
+            ecb = ECB
         }.Schedule(simulationSingleton, state.Dependency);
-
     }
 }
 
 [BurstCompile]
 public struct TriggerJob : ITriggerEventsJob
 {
-    public ComponentLookup<ArmyATag> allArmyA;
-    public ComponentLookup<ArmyBTag> allArmyB;
+    public ComponentLookup<ArmyATag> army;
+    [NativeDisableParallelForRestrictionAttribute]
+    public ComponentLookup<GoalTagComponent> goal;
     public EntityCommandBuffer ecb;
-    public float random;
 
     public void Execute(TriggerEvent triggerEvent)
     {
         Entity entityA = triggerEvent.EntityA;
         Entity entityB = triggerEvent.EntityB;
 
-        if (allArmyA.HasComponent(entityA) && allArmyB.HasComponent(entityB))
+        if (army.HasComponent(entityA) && goal.HasComponent(entityB))
         {
-            if(random >= 0.5f){
-                ecb.DestroyEntity(entityA);
-            }
-            else
-            {
-                ecb.DestroyEntity(entityB);
-            }
+            ecb.DestroyEntity(entityA);
+            goal.GetRefRW(entityB).ValueRW.points += 1;
+
         }
-        else if (allArmyB.HasComponent(entityA) && allArmyA.HasComponent(entityB))
+        else if (goal.HasComponent(entityA) && army.HasComponent(entityB))
         {
-            if (random >= 0.5f)
-            {
-                ecb.DestroyEntity(entityA);
-            }
-            else
-            {
-                ecb.DestroyEntity(entityB);
-            }
+            ecb.DestroyEntity(entityB);
+            goal.GetRefRW(entityA).ValueRW.points += 1;
         }
     }
 }
