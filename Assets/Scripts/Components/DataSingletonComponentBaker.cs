@@ -5,10 +5,9 @@ public class DataSingletonComponentBaker : MonoBehaviour
 {
     public SchedulingType schedulingType;
     public int spawnAmount;
-    public float3 spawnPosition;
     public int spawnAmountCatapult;
-    public float3 spawnPositionCatapult;
     public int catapultRowWidth;
+    public int armyColumnWidth;
 
 
     class Baker : Baker<DataSingletonComponentBaker>
