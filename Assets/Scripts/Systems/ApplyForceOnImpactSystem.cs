@@ -63,7 +63,7 @@ partial struct ApplyForceOnImpactSystem : ISystem
             var soldierEntities = soldierQuery.ToEntityArray(Allocator.TempJob);
             var soldierPositions = soldierQuery.ToComponentDataArray<LocalTransform>(Allocator.TempJob);
 
-            state.Dependency = new ImpactJob
+            var jobHandle = new ImpactJob
             {
                 ecb = ECB,
                 soldierEntities = soldierEntities,
@@ -71,8 +71,11 @@ partial struct ApplyForceOnImpactSystem : ISystem
                 
             }.Schedule(state.Dependency);
 
-            state.Dependency = soldierPositions.Dispose(state.Dependency);
-            state.Dependency = soldierEntities.Dispose(state.Dependency);
+            state.Dependency = jobHandle;
+            state.Dependency.Complete();
+
+            soldierPositions.Dispose();
+            soldierEntities.Dispose();
         }
 
         if (data.schedulingType == SchedulingType.ScheduleParallel)
@@ -87,7 +90,7 @@ partial struct ApplyForceOnImpactSystem : ISystem
             var soldierEntities = soldierQuery.ToEntityArray(Allocator.TempJob);
             var soldierPositions = soldierQuery.ToComponentDataArray<LocalTransform>(Allocator.TempJob);
 
-            state.Dependency = new ImpactJobParallel
+            var jobHandle = new ImpactJobParallel
             {
                 ecb = ECB,
                 soldierEntities = soldierEntities,
@@ -95,10 +98,12 @@ partial struct ApplyForceOnImpactSystem : ISystem
 
             }.ScheduleParallel(state.Dependency);
 
-            state.Dependency = soldierPositions.Dispose(state.Dependency);
-            state.Dependency = soldierEntities.Dispose(state.Dependency);
-        }
+            state.Dependency = jobHandle;
+            state.Dependency.Complete();
 
+            soldierPositions.Dispose();
+            soldierEntities.Dispose();
+        }
     }
 
 }
