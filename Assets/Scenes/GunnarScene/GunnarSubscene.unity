@@ -164,6 +164,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data: {fileID: 905355201}
+  catapultOffset:
+    x: 0
+    y: -4
+    z: 0
   catapultBasePrefab: {fileID: 6043006574952073835, guid: 9c80e9e09c1587346be4f50fece5c6e8, type: 3}
   catapultBaseRotation: {x: -0.000000030903283, y: -0.7069847, z: 0.70722884, w: -0.000000030913956}
   catapultArmPrefab: {fileID: 5274865003482948578, guid: 5c40727d786e2774b926d4724d04d9eb, type: 3}
@@ -375,6 +379,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data: {fileID: 905355201}
+  armyAOffset:
+    x: 10
+    y: 0
+    z: 60
   armySizeB: 0
   armyBOffset:
     x: 0
@@ -427,15 +435,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   schedulingType: 2
   spawnAmount: 1000
-  spawnPosition:
-    x: 0
-    y: 0
-    z: 60
   spawnAmountCatapult: 34
-  spawnPositionCatapult:
-    x: 0
-    y: -4
-    z: 0
   catapultRowWidth: 10
 --- !u!4 &905355202
 Transform:

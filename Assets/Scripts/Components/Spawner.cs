@@ -5,6 +5,7 @@ using UnityEngine;
 public class Spawner : MonoBehaviour
 {
     public DataSingletonComponentBaker data;
+    public float3 armyAOffset;
     public int armySizeB = 100;
     public float3 armyBOffset = new float3(0, 0, 0);
     public GameObject armyUnitPrefab;
@@ -19,7 +20,7 @@ public class Spawner : MonoBehaviour
             {
                 armySizeA = authoring.data.spawnAmount,
                 armySizeB = authoring.armySizeB,
-                armyAOffset = authoring.data.spawnPosition,
+                armyAOffset = authoring.armyAOffset,
                 armyBOffset = authoring.armyBOffset,
                 armyUnitPrefab = GetEntity(authoring.armyUnitPrefab, TransformUsageFlags.Dynamic)
             });

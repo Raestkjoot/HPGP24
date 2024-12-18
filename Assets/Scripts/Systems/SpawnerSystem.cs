@@ -36,10 +36,17 @@ partial struct SpawnerSystem : ISystem
             for (int i = 0; i < armyWidth * armyWidth; i++)
             {
                 var e = ECB.Instantiate(spawner.armyUnitPrefab);
-                float x = (i % armyWidth) * 2f;
-                float z = ((i / armyWidth) % armyWidth) * 2f;
+                float x = (i % armyWidth) * 4f;
+                float z = ((i / armyWidth) % armyWidth) * 4f;
 
-                ECB.AddComponent(e, LocalTransform.FromPosition(spawner.armyAOffset + new float3(x, y, z)));
+                var trans = new LocalTransform
+                {
+                    Position = spawner.armyAOffset + new float3(x, y, z),
+                    Rotation = quaternion.identity,
+                    Scale = 2
+                };
+
+                ECB.AddComponent<LocalTransform>(e, trans);
                 ECB.AddComponent(e, aTag);
                 ECB.AddComponent(e, new SoldierTag { });
             }
@@ -52,10 +59,18 @@ partial struct SpawnerSystem : ISystem
             for (int i = 0; i < armyWidth * armyWidth; i++)
             {
                 var e = ECB.Instantiate(spawner.armyUnitPrefab);
-                float x = (i % armyWidth) * 2f;
-                float z = ((i / armyWidth) % armyWidth) * 2f;
+                float x = (i % armyWidth) * 6f;
+                float z = ((i / armyWidth) % armyWidth) * 6f;
 
-                ECB.AddComponent(e, LocalTransform.FromPosition(spawner.armyBOffset + new float3(x, y, z)));
+                var trans = new LocalTransform
+                {
+                    Position = spawner.armyAOffset + new float3(x, y, z),
+                    Rotation = quaternion.identity,
+                    Scale = 2
+                };
+
+                ECB.AddComponent<LocalTransform>(e, trans);
+
                 ECB.AddComponent(e, bTag);
                 ECB.AddComponent(e, new SoldierTag { });
             }
@@ -99,10 +114,17 @@ public partial struct SpawnUnitsParallel : IJobEntity
         for (int i = 0; i < armyWidth * armyWidth; i++)
         {
             var e = ecb.Instantiate(key, spawner.armyUnitPrefab);
-            float x = (i % armyWidth) * 2f;
-            float z = ((i / armyWidth) % armyWidth) * 2f;
+            float x = (i % armyWidth) * 4f;
+            float z = ((i / armyWidth) % armyWidth) * 4f;
 
-            ecb.AddComponent(key, e, LocalTransform.FromPosition(spawner.armyAOffset + new float3(x, y, z)));
+            var trans = new LocalTransform
+            {
+                Position = spawner.armyAOffset + new float3(x, y, z),
+                Rotation = quaternion.identity,
+                Scale = 2
+            };
+
+            ecb.AddComponent<LocalTransform>(key, e, trans);
             ecb.AddComponent(key, e, aTag);
             ecb.AddComponent(key,e, new SoldierTag { });
         }
@@ -115,8 +137,8 @@ public partial struct SpawnUnitsParallel : IJobEntity
         for (int i = 0; i < armyWidth * armyWidth; i++)
         {
             var e = ecb.Instantiate(key, spawner.armyUnitPrefab);
-            float x = (i % armyWidth) * 2f;
-            float z = ((i / armyWidth) % armyWidth) * 2f;
+            float x = (i % armyWidth) * 10f;
+            float z = ((i / armyWidth) % armyWidth) * 10f;
 
             ecb.AddComponent(key, e, LocalTransform.FromPosition(spawner.armyBOffset + new float3(x, y, z)));
             ecb.AddComponent(key, e, bTag);
@@ -140,10 +162,18 @@ public partial struct SpawnUnits : IJobEntity
         for (int i = 0; i < armyWidth * armyWidth; i++)
         {
             var e = ecb.Instantiate(spawner.armyUnitPrefab);
-            float x = (i % armyWidth) * 2f;
-            float z = ((i / armyWidth) % armyWidth) * 2f;
+            float x = (i % armyWidth) * 4f;
+            float z = ((i / armyWidth) % armyWidth) * 4f;
 
-            ecb.AddComponent(e, LocalTransform.FromPosition(spawner.armyAOffset + new float3(x, y, z)));
+
+            var trans = new LocalTransform
+            {
+                Position = spawner.armyAOffset + new float3(x, y, z),
+                Rotation = quaternion.identity,
+                Scale = 2
+            };
+
+            ecb.AddComponent<LocalTransform>(e, trans);
             ecb.AddComponent(e, aTag);
             ecb.AddComponent(e, new SoldierTag { });
         }
@@ -156,8 +186,8 @@ public partial struct SpawnUnits : IJobEntity
         for (int i = 0; i < armyWidth * armyWidth; i++)
         {
             var e = ecb.Instantiate(spawner.armyUnitPrefab);
-            float x = (i % armyWidth) * 2f;
-            float z = ((i / armyWidth) % armyWidth) * 2f;
+            float x = (i % armyWidth) * 10f;
+            float z = ((i / armyWidth) % armyWidth) * 10f;
 
             ecb.AddComponent(e, LocalTransform.FromPosition(spawner.armyBOffset + new float3(x, y, z)));
             ecb.AddComponent(e, bTag);

@@ -5,6 +5,7 @@ using UnityEngine;
 class CatapultSpawner : MonoBehaviour
 {
     public DataSingletonComponentBaker data;
+    public float3 catapultOffset;
     public GameObject catapultBasePrefab;
     public Quaternion catapultBaseRotation;
     public GameObject catapultArmPrefab;
@@ -20,7 +21,7 @@ class CatapultSpawner : MonoBehaviour
             {
                 spawnAmmount = authoring.data.spawnAmountCatapult,
                 catapultRowWidth = authoring.data.catapultRowWidth,
-                catapultOffset = authoring.data.spawnPositionCatapult,
+                catapultOffset = authoring.catapultOffset,
                 catapultBasePrefab = GetEntity(authoring.catapultBasePrefab, TransformUsageFlags.Dynamic),
                 catapultBaseRotation = authoring.catapultBaseRotation,
                 catapultArmPrefab = GetEntity(authoring.catapultArmPrefab, TransformUsageFlags.Dynamic),
