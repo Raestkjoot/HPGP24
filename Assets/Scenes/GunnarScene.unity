@@ -5087,6 +5087,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particles: {fileID: 1274320343}
+  particles2: {fileID: 0}
 --- !u!1 &1540675686
 GameObject:
   m_ObjectHideFlags: 0

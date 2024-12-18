@@ -43,7 +43,7 @@ public partial struct StandSystem : ISystem
 
                 float3 entityUp = math.mul(currentRotation, math.up());
 
-                if (math.dot(entityUp, math.up()) >= 0.9f)
+                if (math.dot(entityUp, math.up()) >= 0.7f)
                 {
                     ECB.RemoveComponent<RotatingTag>(entity);
                 }
