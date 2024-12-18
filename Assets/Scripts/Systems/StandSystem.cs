@@ -9,17 +9,27 @@ public partial struct StandSystem : ISystem
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
-        foreach (var (localTransform, enemy) in
-            SystemAPI.Query<RefRW<LocalTransform>, RefRO<EnemyComponent>>().WithNone<StoppedTag>())
+        var ECB = SystemAPI.GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>()
+                .CreateCommandBuffer(state.WorldUnmanaged);
+        foreach (var (localTransform, entity) in
+            SystemAPI.Query<RefRW<LocalTransform>>().WithNone<StoppedTag>().WithAll<EnemyComponent>().WithEntityAccess())
         {
+
             quaternion currentRotation = localTransform.ValueRO.Rotation;
 
             float3 entityUp = math.mul(currentRotation, math.up());
 
             if (math.dot(entityUp, math.up()) < 0.5f) {
+                ECB.AddComponent<RotatingTag>(entity);
                 quaternion targetRotation = quaternion.identity;
-                localTransform.ValueRW.Rotation = math.slerp(currentRotation,targetRotation, SystemAPI.Time.DeltaTime * enemy.ValueRO.rotationSpeed);
+                localTransform.ValueRW.Rotation = targetRotation;
             }
+
+            if (math.dot(entityUp, math.up()) > 0.9f)
+            {
+                ECB.RemoveComponent<RotatingTag>(entity);
+            }
+
         }
     }
 }
