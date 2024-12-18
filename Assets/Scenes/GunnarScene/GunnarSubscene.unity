@@ -164,6 +164,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data: {fileID: 905355201}
+  catapultOffset:
+    x: 0
+    y: -4
+    z: 0
   catapultBasePrefab: {fileID: 6043006574952073835, guid: 9c80e9e09c1587346be4f50fece5c6e8, type: 3}
   catapultBaseRotation: {x: -0.000000030903283, y: -0.7069847, z: 0.70722884, w: -0.000000030913956}
   catapultArmPrefab: {fileID: 5274865003482948578, guid: 5c40727d786e2774b926d4724d04d9eb, type: 3}
@@ -251,7 +255,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 12.3, y: -5.74, z: 48.9}
-  m_LocalScale: {x: 127.49, y: 1, z: 371.72}
+  m_LocalScale: {x: 10000, y: 1, z: 10000}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -375,11 +379,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data: {fileID: 905355201}
-  armySizeB: 0
-  armyBOffset:
-    x: 0
+  armyOffset:
+    x: 100
     y: 0
-    z: 0
+    z: 20
   armyUnitPrefab: {fileID: 3914314553464854680, guid: 48d88d86b0f12784eb08dad7f04bba64, type: 3}
 --- !u!4 &747763803
 Transform:
@@ -426,17 +429,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   schedulingType: 2
-  spawnAmount: 1000
-  spawnPosition:
-    x: 0
-    y: 0
-    z: 60
-  spawnAmountCatapult: 34
-  spawnPositionCatapult:
-    x: 0
-    y: -4
-    z: 0
+  spawnAmount: 10000
+  spawnAmountCatapult: 50
   catapultRowWidth: 10
+  armyColumnWidth: 40
 --- !u!4 &905355202
 Transform:
   m_ObjectHideFlags: 0
