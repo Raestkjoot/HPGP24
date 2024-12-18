@@ -14,6 +14,7 @@ public class Catapult : MonoBehaviour
     public static readonly Vector2 projectileVelocityRange = new(40.0f, 50.0f);
     public static readonly Vector2 projectileSideVelocityRange = new(-0.4f, 0.4f);
     public static readonly Vector3 ProjectileSpawnOffset = new(0.0f, -8.8f, 0.0f);
+    public static readonly Vector3 ProjectileLaunchOffset = new(0.0f, 8.0f, 2.84f);
 
     class CatapultBaker : Baker<Catapult>
     {
