@@ -157,6 +157,8 @@ public partial struct ImpactJobParallel : IJobEntity
     [ReadOnly] public NativeArray<Entity> soldierEntities;
     [ReadOnly] public NativeArray<LocalTransform> soldierPositions;
 
+    
+
     public void Execute([ChunkIndexInQuery] int key, Entity projectileEntity, in LocalTransform projectileTransform, in ProjectileComponent projectileForce)
     {
         float3 projectilePos = projectileTransform.Position;
