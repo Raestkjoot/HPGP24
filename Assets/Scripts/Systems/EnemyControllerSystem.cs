@@ -31,7 +31,7 @@ partial struct EnemyControllerSystem : ISystem
         
         if(data.schedulingType == SchedulingType.Schedule)
         {
-            var moveArmyADependency = new MoveArmyAJob
+            state.Dependency = new MoveArmyAJob
             {
                 deltaTime = deltaTime,
 
@@ -41,7 +41,7 @@ partial struct EnemyControllerSystem : ISystem
 
         if(data.schedulingType == SchedulingType.ScheduleParallel)
         {
-            var moveArmyADependency = new MoveArmyAJob
+            state.Dependency = new MoveArmyAJob
             {
                 deltaTime = deltaTime,
 
