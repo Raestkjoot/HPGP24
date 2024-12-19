@@ -44,7 +44,7 @@ public struct ProjectileCollisionJob : ICollisionEventsJob
     {
         Entity entityA = collisionEvent.EntityA;
         Entity entityB = collisionEvent.EntityB;
-        Timer timer = new Timer {timer = 1.0f }; //How long projectile stays in scene
+        Timer timer = new Timer {timer = .5f }; //How long projectile stays in scene
 
         if (floor.HasComponent(entityA) && projectile.HasComponent(entityB))
         {
